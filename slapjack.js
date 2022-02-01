@@ -28,10 +28,11 @@ var players = [];
 var numP = 4;
 
 //called at the biggining of the game
-function setUp(numPLayers) {
+function setup(numPLayers) {
     shuffle();
     numP = numPLayers;
     for(let i = 0; i < numPLayers; i++) {
+        //splits the deck into equal sections
         let split = (52 / numPLayers)
         players[i] = {
             cards = mainDeck.slice(split * i, split * (i + 1))
@@ -42,10 +43,12 @@ function setUp(numPLayers) {
 //more of a template than anything concrete as per ^^
 function slap(index) {
     if(stack.currCard.charAt(0) == 'J') {
+        // adds the stack to the player's card pile
         players[index].splice(0, 0, stack.deck);
         stack.deck = [];
         stack.currCard = '';
     } else {
+        // adds the current player's top card to the next player's hand
         players[(index + 1) % numP].cards.splice(0, 0, players[index].pop());
     }
 }
@@ -57,5 +60,36 @@ function placeCard(player) {
 
     stack.deck.push(placeCard.cards.pop());
     stack.currCard = stack.deck[stack.deck.length - 1];
+
+    if(stack.currCard.charAt(0) == 'J')  {
+        computerSlap();
+    } else {
+        // 1 / 16th chance a computer will slap
+        if(Math.random() < 0.125) {
+            computerSlap();
+        }
+    }
 }
 
+//delay them playing
+function computerPlay(index) {
+    let time = Math.floor(Math.random() * 2000 + 750);
+    setTimeout(() => {
+        placeCard(players[i]);
+    }, time);
+}
+
+function computerSlap() {
+    let times = Array.from({length: players.length}, _ => Math.floor(Math.random * 2000 + 750));
+    let index = 1;
+    let timeout = 2750;
+    for(let i = 0; i < times.length; i++) {
+        if(times[i] < timeout) {
+            index = i;
+            timeout = times[i];
+        }
+    }
+    setTimeout(() => {
+        slap(index);
+    }, timeout);
+}
