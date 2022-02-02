@@ -40,7 +40,7 @@ function setup(numPLayers) {
         //splits the deck into equal sections
         let split = (52 / numPLayers)
         players[i] = {
-            cards = mainDeck.slice(split * i, split * (i + 1))
+            cards: mainDeck.slice(split * i, split * (i + 1))
         }
     }
 
