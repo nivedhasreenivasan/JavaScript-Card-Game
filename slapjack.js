@@ -6,13 +6,6 @@ const mainDeck = ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '0S', 'J
 // ^^ will be used as "cards" because the codes line up with the image file names (e.g. AS -> AS.png)\
 var start = false;
 
-document.addEventListener('keyup', event => {
-    if (start && event.code === 'Space') {
-        slap(0);
-    }
-});
-
-
 function shuffle() {
     let current_index = mainDeck.length, rIndex;
 
@@ -47,31 +40,45 @@ function setup(numPLayers) {
     start = true;
 }
 
+function compCycle() {
+    for(let i = 1; i < numP; i++) {
+        computerPlay(i);
+    }
+}
+
 //more of a template than anything concrete as per ^^
 function slap(index) {
     if (stack.currCard.charAt(0) == 'J') {
         // adds the stack to the player's card pile
-        players[index].splice(0, 0, stack.deck);
+        console.log(players[index].cards.length);
+        players[index].cards.splice(0, 0, stack.deck);
+        console.log(players[index].cards.length);
         stack.deck = [];
         stack.currCard = '';
     } else {
         // adds the current player's top card to the next player's hand
-        players[(index + 1) % numP].cards.splice(0, 0, players[index].pop());
+        players[(index + 1) % numP].cards.splice(0, 0, players[index].cards.pop());
     }
 }
 
-function placeCard(player) {
-    if (player.cards.length == 0) {
+function placeCard(index) {
+    if(index === 0) {
+        for(let i = 0; i < numP; i++) {
+            console.log(players[i].cards.length);
+        }
+    }
+    if (players[index].cards.length == 0) {
         // TODO -> Lose 
+        return;
     }
 
-    stack.deck.push(placeCard.cards.pop());
+    stack.deck.push(players[index].cards.pop());
     stack.currCard = stack.deck[stack.deck.length - 1];
-
+    updatePile();
     if (stack.currCard.charAt(0) == 'J') {
         computerSlap();
     } else {
-        // 1 / 16th chance a computer will slap
+        // 1 / 16th chance a computer will slap randomly
         if (Math.random() < 0.125) {
             computerSlap();
         }
@@ -80,14 +87,14 @@ function placeCard(player) {
 
 //delay them playing
 function computerPlay(index) {
-    let time = Math.floor(Math.random() * 2000 + 750);
+    let time = Math.floor(Math.random() * 500) + (500 * index);
     setTimeout(() => {
-        placeCard(players[i]);
+        placeCard(index);
     }, time);
 }
 
 function computerSlap() {
-    let times = Array.from({ length: players.length }, _ => Math.floor(Math.random * 2000 + 750));
+    let times = Array.from({ length: players.length }, _ => Math.floor(Math.random * 500 + 500));
     let index = 1;
     let timeout = 2750;
     for (let i = 0; i < times.length; i++) {
@@ -100,3 +107,26 @@ function computerSlap() {
         slap(index);
     }, timeout);
 }
+
+
+function updatePile() {
+    if(stack.currCard == "" ) {
+        document.getElementById("played").src="images/back-black.png";
+    } else {
+        document.getElementById("played").src=`images/${stack.currCard}.png`;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setup(4);
+    document.getElementById('screen').addEventListener('click', () => {
+        placeCard(0);
+        compCycle();
+    });
+
+    document.addEventListener('keyup', event => {
+        if (start && event.code === 'Space') {
+            slap(0);
+        }
+    });
+});
