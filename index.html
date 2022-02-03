@@ -4,21 +4,49 @@
         <title>Slapjack</title>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
         <script src="slapjack.js"></script>
+        <style>
+            body {
+                background-color:rgb(11, 121, 11);  
+            }
+            .drawPile{
+                left: 27%;
+                position: absolute;
+                width: 400px;
+                height: 500px;
+                background-color: rgb(11, 121, 11);
+                border-color: rgb(11, 121, 11);
+            }
+            .discardPile{
+                left: 53%;
+                position: absolute;
+                width: 400px;
+                height: 500px;
+                background-color: rgb(11, 121, 11);
+                border-color: rgb(11, 121, 11);
+            }
+            .backImage
+            {
+                width: 400px;
+                height: 500px;
+            }
+            .discardImage
+            {
+                width: 400px;
+                height: 500px;
+            }
+            h1{
+                text-align:center;
+                color:black;
+                font-family: Times New Roman;
+            }
+        </style>
     </head>
     <body>
-        <h1 style="background-color:rgb(0, 156, 39);"></h1>
         <div class="container" style="max-width: 480px;">
-            <h2>  Slapjack</h2>
-            <!-- replace image with the back of the card -->
-            <button><img src="images/back.png"></button>
-            <!-- replace image with a blank image to start -->
-            <button><img src="images/5C.png"></button>
-            <style>
-                button {
-                    width: 1000;
-                    height: 70;
-                }
-            </style>
+            <h1>Slapjack</h1>
+            <button class=drawPile ><img src="images/back-black.png"  class = backImage style = 'background-color: rgb(11, 121, 11);'></button>
+            <!-- replace image with a random card -->
+            <button  class=discardPile ><img src="images/5C.png"  class = discardImage style = 'background-color: rgb(11, 121, 11);'></button>
 
         </div>
     </body>
