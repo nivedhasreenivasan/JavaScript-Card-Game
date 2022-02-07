@@ -57,6 +57,7 @@ async function slap(index) {
         players[index].cards = stack.deck.concat(players[index].cards);
         stack.deck = [];
         stack.currCard = '';
+        updatePile()
     } else {
         // adds the current player's top card to the next player's hand
         players[(index + 1) % numP].cards.splice(0, 0, players[index].cards.pop());
@@ -66,7 +67,7 @@ async function slap(index) {
 
 async function placeCard(index) {
     if (players[index].cards.length == 0) {
-        // TODO -> Lose 
+        // TODO -> Lose ----------------------------------------------------------------------------------------------------------------------------------------------------- 
         return;
     }
 
@@ -77,7 +78,7 @@ async function placeCard(index) {
         computerSlap();
     } else {
         // 1 / 16th chance a computer will slap randomly
-        if (Math.random() < 0.125) {
+        if (Math.random() < 0.075) {
             computerSlap();
         }
     }
@@ -96,14 +97,13 @@ async function computerSlap() {
     let index = 1;
     let timeout = 2750;
     for (let i = 0; i < times.length; i++) {
-        console.log(times[1]);
         if (times[i] < timeout) {
             index = i + 1;
             timeout = times[i];
         }
     }
     setTimeout(() => {
-        alert(`bruh ${timeout}ms`)
+        alert(`Player${index + 1} slapped with a reaction time of ${timeout}ms`)
         slap(index);
     }, timeout);
 }
