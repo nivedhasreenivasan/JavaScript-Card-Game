@@ -49,21 +49,22 @@ function compCycle() {
 }
 
 //more of a template than anything concrete as per ^^
-function slap(index) {
+async function slap(index) {
     if (stack.currCard.charAt(0) == 'J') {
+        alert(stack.deck)
         // adds the stack to the player's card pile
-        console.log(players[index].cards.length);
-        players[index].cards.splice(0, 0, stack.deck);
-        console.log(players[index].cards.length);
+
+        players[index].cards = stack.deck.concat(players[index].cards);
         stack.deck = [];
         stack.currCard = '';
     } else {
         // adds the current player's top card to the next player's hand
         players[(index + 1) % numP].cards.splice(0, 0, players[index].cards.pop());
     }
+    alert(`P1: ${players[0].cards.length}\nP2: ${players[1].cards.length}\nP3: ${players[2].cards.length}\nP4: ${players[3].cards.length}\n`)
 }
 
-function placeCard(index) {
+async function placeCard(index) {
     if(index === 0) {
         for(let i = 0; i < numP; i++) {
             console.log(players[i].cards.length);
@@ -88,14 +89,14 @@ function placeCard(index) {
 }
 
 //delay them playing
-function computerPlay(index) {
+async function computerPlay(index) {
     let time = Math.floor(Math.random() * 500) + (500 * index);
     setTimeout(() => {
         placeCard(index);
     }, time);
 }
 
-function computerSlap() {
+async function computerSlap() {
     let times = Array.from({ length: players.length }, _ => Math.floor(Math.random * 500 + 500));
     let index = 1;
     let timeout = 2750;
