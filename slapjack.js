@@ -65,11 +65,6 @@ async function slap(index) {
 }
 
 async function placeCard(index) {
-    if(index === 0) {
-        for(let i = 0; i < numP; i++) {
-            console.log(players[i].cards.length);
-        }
-    }
     if (players[index].cards.length == 0) {
         // TODO -> Lose 
         return;
@@ -97,16 +92,18 @@ async function computerPlay(index) {
 }
 
 async function computerSlap() {
-    let times = Array.from({ length: players.length }, _ => Math.floor(Math.random * 500 + 500));
+    let times = [Math.floor(Math.random() * 500 + 500), Math.floor(Math.random() * 500 + 500), Math.floor(Math.random() * 500 + 500)]
     let index = 1;
     let timeout = 2750;
     for (let i = 0; i < times.length; i++) {
+        console.log(times[1]);
         if (times[i] < timeout) {
-            index = i;
+            index = i + 1;
             timeout = times[i];
         }
     }
     setTimeout(() => {
+        alert(`bruh ${timeout}ms`)
         slap(index);
     }, timeout);
 }
