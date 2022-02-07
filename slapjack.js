@@ -43,7 +43,7 @@ function setup(numPLayers) {
 }
 
 function compCycle() {
-    for(let i = 1; i < numP; i++) {
+    for(let i = 1; i < players.length; i++) {
         computerPlay(i);
     }
 }
@@ -60,13 +60,25 @@ async function slap(index) {
         updatePile()
     } else {
         // adds the current player's top card to the next player's hand
-        players[(index + 1) % numP].cards.splice(0, 0, players[index].cards.pop());
+        players[(index + 1) % players.length].cards.splice(0, 0, players[index].cards.pop());
     }
-    alert(`P1: ${players[0].cards.length}\nP2: ${players[1].cards.length}\nP3: ${players[2].cards.length}\nP4: ${players[3].cards.length}\n`)
+    string = '';
+    for(let i = 0; i < players.length; i++) {
+        string += `P${i + 1}: ${players[i].cards.length}\n`
+    }
+    alert(string)
 }
 
 async function placeCard(index) {
     if (players[index].cards.length == 0) {
+        if(index === 0) {
+            alert("YOU LOSE");
+        } else {
+            players.splice(index, 1);
+            if(players.length === 1) {
+                alert("YOU WIN")
+            }
+        }
         // TODO -> Lose ----------------------------------------------------------------------------------------------------------------------------------------------------- 
         return;
     }
@@ -93,7 +105,7 @@ async function computerPlay(index) {
 }
 
 async function computerSlap() {
-    let times = [Math.floor(Math.random() * 500 + 500), Math.floor(Math.random() * 500 + 500), Math.floor(Math.random() * 500 + 500)]
+    let times = Array.from({ length: players.length - 1}, _ => Math.floor(Math.random() * 500 + 500));
     let index = 1;
     let timeout = 2750;
     for (let i = 0; i < times.length; i++) {
